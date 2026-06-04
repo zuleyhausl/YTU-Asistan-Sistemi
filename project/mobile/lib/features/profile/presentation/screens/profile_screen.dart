@@ -23,7 +23,6 @@ import 'package:ytu_assistant/features/profile/presentation/widgets/section_card
 import 'package:ytu_assistant/features/profile/presentation/widgets/skill_chip.dart';
 import 'package:ytu_assistant/l10n/app_localizations.dart';
 import 'package:ytu_assistant/shared/widgets/app_snack_bar.dart';
-import 'package:ytu_assistant/shared/widgets/language_toggle.dart';
 
 /// The real profile screen (replaces the placeholder). Shows the user header
 /// and, for students, the CV sections (skills, languages, experience, education).
@@ -99,12 +98,6 @@ class ProfileScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(l10n.profileTitle),
-        actions: const <Widget>[
-          Padding(
-            padding: EdgeInsets.only(right: 12),
-            child: Center(child: LanguageToggle()),
-          ),
-        ],
       ),
       body: async.when(
         loading: () => const Center(child: CircularProgressIndicator()),

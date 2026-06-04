@@ -39,7 +39,6 @@ class AppConstants {
   /// Secure storage keys.
   static const String tokenKey = 'auth_token';
   static const String userKey = 'auth_user';
-  static const String localeKey = 'app_locale';
 
   /// University email domains used by the backend to assign roles.
   static const String studentEmailDomain = '@std.yildiz.edu.tr';

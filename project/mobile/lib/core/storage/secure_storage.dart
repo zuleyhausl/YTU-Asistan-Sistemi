@@ -54,12 +54,6 @@ class SecureStorage {
     }
   }
 
-  // ---- Locale ----
-  Future<void> saveLocale(String languageCode) =>
-      _write(AppConstants.localeKey, languageCode);
-
-  Future<String?> readLocale() => _read(AppConstants.localeKey);
-
   // ---- Bulk ----
   Future<void> clear() async {
     try {

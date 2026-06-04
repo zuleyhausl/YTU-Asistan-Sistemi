@@ -37,42 +37,49 @@ class ApplicantTile extends StatelessWidget {
               ),
               const SizedBox(width: 12),
               Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      applicant.fullName,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: AppTextStyles.titleMedium,
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      _subtitle(),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: AppTextStyles.bodyMedium,
-                    ),
-                    const SizedBox(height: 6),
-                    Row(
+                child: Builder(
+                  builder: (BuildContext context) {
+                    final L10n l10n = L10n.of(context);
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        if (applicant.gpa != null) ...<Widget>[
-                          _gpaPill(applicant.gpa!),
-                          const SizedBox(width: 8),
-                        ],
-                        Flexible(
-                          child: Text(
-                            applicant.appliedAt == null
-                                ? (applicant.email ?? '')
-                                : 'Applied ${DateFormatter.relativeTime(applicant.appliedAt!)}',
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: AppTextStyles.caption,
-                          ),
+                        Text(
+                          applicant.fullName,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: AppTextStyles.titleMedium,
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          _subtitle(l10n),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: AppTextStyles.bodyMedium,
+                        ),
+                        const SizedBox(height: 6),
+                        Row(
+                          children: <Widget>[
+                            if (applicant.gpa != null) ...<Widget>[
+                              _gpaPill(applicant.gpa!, l10n),
+                              const SizedBox(width: 8),
+                            ],
+                            Flexible(
+                              child: Text(
+                                applicant.appliedAt == null
+                                    ? (applicant.email ?? '')
+                                    : l10n.appliedOn(
+                                        DateFormatter.relativeTime(
+                                            applicant.appliedAt!)),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: AppTextStyles.caption,
+                              ),
+                            ),
+                          ],
                         ),
                       ],
-                    ),
-                  ],
+                    );
+                  },
                 ),
               ),
               const SizedBox(width: 8),
@@ -84,13 +91,13 @@ class ApplicantTile extends StatelessWidget {
     );
   }
 
-  String _subtitle() {
+  String _subtitle(L10n l10n) {
     final List<String> parts = <String>[];
     if ((applicant.department ?? '').trim().isNotEmpty) {
       parts.add(applicant.department!.trim());
     }
     if (applicant.classYear != null) {
-      parts.add('Year ${applicant.classYear}');
+      parts.add('${l10n.labelClassYear} ${applicant.classYear}');
     }
     if (parts.isEmpty && (applicant.email ?? '').isNotEmpty) {
       return applicant.email!;
@@ -98,9 +105,9 @@ class ApplicantTile extends StatelessWidget {
     return parts.join(' · ');
   }
 
-  Widget _gpaPill(double gpa) {
+  Widget _gpaPill(double gpa, L10n l10n) {
     final bool high = gpa >= 3.5;
-    final String text = 'GPA ${gpa.toStringAsFixed(2)}';
+    final String text = '${l10n.labelGpa} ${gpa.toStringAsFixed(2)}';
     if (high) {
       return Container(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
